@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import './App.scss';
 import bgImg from './assets/absLines.png'
 import allIco from './assets/all.svg'
@@ -11,14 +11,60 @@ import InputHolder from "./components/inputHolder";
 
 function App() {
     console.log("App is called")
+    const [tasks, setTasks] = useState<TaskProps[]>(pendingTasks);
 
-    const [pendingTasksActive, setPendingTasks] = useState(pendingTasks);
+    const [pendingTasksActive, setPendingTasksActive] = useState<TaskProps[]>(tasks.slice(0, 6));
+    const [hasMoreTasks, setHasMoreTasks] = useState<boolean>(true);
+
+    const lastTaskRef = useRef<HTMLDivElement>(null);
+
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && hasMoreTasks) {
+                loadMoreTasks();
+            }
+        });
+    };
+
+    const observerOptions: IntersectionObserverInit = {
+        threshold: 0
+    };
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        if (lastTaskRef.current) {
+            observer.observe(lastTaskRef.current);
+        }
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [pendingTasksActive]);
+
+    const loadMoreTasks = () => {
+        const startIndex = pendingTasksActive.length;
+        const endIndex = startIndex + 6;
+        const newTasks = tasks.slice(startIndex, endIndex);
+
+        setPendingTasksActive(prevTasks => [...prevTasks, ...newTasks]);
+        if (endIndex >= tasks.length) {
+            setHasMoreTasks(false);
+        }
+    };
 
     const handleCreateTask = useCallback((newTask: TaskProps) => {
-        setPendingTasks((prevPendingTasks) => [...prevPendingTasks, newTask]);
-    }, []);
+        try {
+            setTasks(prevTasks => [...prevTasks, newTask]);
+        } catch (error) {
+            console.error("Error occurred while adding new task:", error);
+        }
+    }, [setTasks]);
 
-  return (
+    console.log(pendingTasksActive, "ACTIVE PENDING TASKS");
+    console.log(tasks, "ALL TASKS");
+
+    return (
     <div className="App">
             <img alt="abstract lines background" className="bgImg" src={bgImg}/>
             <h1>todos</h1>
@@ -29,7 +75,7 @@ function App() {
                     <img className="imgAnim" src={allIco} alt="All Icon"/>
                 </div>
                 <div className="main">
-                    <p className="taskCount">{pendingTasksActive.length} left</p>
+                    <p className="taskCount">{pendingTasksActive.length} left {tasks.length} all</p>
                     <div className="taskHolder">
                         {pendingTasksActive.map((task:TaskProps) => (
                             <TaskItem
@@ -39,8 +85,11 @@ function App() {
                                 date={task.date}
                                 status={task.status}
                              />
+
                         ))}
+                        <div className="intersecter" ref={lastTaskRef}></div>
                     </div>
+
                     <InputHolder onCreateTask={handleCreateTask}/>
                 </div>
             </div>
