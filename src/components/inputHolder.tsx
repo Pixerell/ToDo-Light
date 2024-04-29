@@ -5,8 +5,9 @@ import {TaskProps} from "../utils/taskArrays";
 
 interface InputHolderProps {
     onCreateTask: (newTask: TaskProps) => void;
+    currentTaskType: string;
 }
-const InputHolder: React.FC<InputHolderProps> = ({onCreateTask})  => {
+const InputHolder: React.FC<InputHolderProps> = ({onCreateTask, currentTaskType })  => {
 
     const [newTaskDescription, setNewTaskDescription] = useState<string>('');
 
@@ -17,13 +18,12 @@ const InputHolder: React.FC<InputHolderProps> = ({onCreateTask})  => {
             return
         }
 
-        const newTask = createTask(newTaskDescription);
+        const newTask = createTask(newTaskDescription, currentTaskType);
         console.log('New Task:', newTask);
         onCreateTask(newTask)
         setNewTaskDescription('');
     }, [newTaskDescription]);
 
-    console.log("Input holder is called")
 
     return (
         <div className="inputHolder">

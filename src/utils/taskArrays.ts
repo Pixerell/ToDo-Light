@@ -8,6 +8,7 @@
 
 export const STATUS_SUCCESS = "Completed"
 export const STATUS_PENDING = "Pending"
+export const STATUS_ALL = "All"
 
 export interface TaskProps {
     id:string,
@@ -214,6 +215,4 @@ export let completedTasks: Array<TaskProps> = [
     },
 ];
 
-export let tempTasks: Array<TaskProps> = [
-
-];
+export let tempTasks: Array<TaskProps> = [];
