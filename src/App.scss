@@ -1,0 +1,49 @@
+@import 'theme.scss';
+
+@font-face {
+  font-family: "bocFont";
+  src: local("Bauhaus"),
+  url('./assets/fonts/Bauhaus_.ttf') format("truetype")
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  text-align: center;
+  font-family: bocFont, serif;
+  font-weight: normal;
+  letter-spacing: 0.2rem;
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  min-width: 100%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.wrapper {
+  display: flex;
+  border: 10px solid var(--yellow-color);
+  width: 62%;
+  min-height: 600px;
+  border-radius: 1em;
+}
+
+.bgImg {
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  max-height: 98vh;
+  opacity: 0.3;
+  filter: blur(4px);
+}
+
+h1 {
+  margin: 0 0 60px;
+  color: var(--cyan-color);
+  font-size: 128px;
+  font-weight: inherit;
+
+}
