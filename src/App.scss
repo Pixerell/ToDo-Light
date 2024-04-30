@@ -21,6 +21,8 @@
   min-width: 100%;
   padding-top: 30px;
   padding-bottom: 30px;
+  transition: 0.2s;
+
 }
 
 
@@ -33,14 +35,14 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--yellow-color);
+  background: var(--mainApp-color);
   border-radius: 8px;
 }
 
 .wrapper {
 
   display: flex;
-  border: 10px solid var(--yellow-color);
+  border: 10px solid var(--mainApp-color);
   width: 62%;
   min-height: 560px;
   max-height: 660px;
@@ -52,7 +54,7 @@
   .sidebar {
     width: 10%;
     align-content: center;
-    border-right: 6px solid var(--yellow-color);
+    border-right: 6px solid var(--mainApp-color);
   }
 
   .sidebar img {
@@ -68,7 +70,7 @@
   }
 
   .taskCount {
-    color: var(--cyan-color);
+    color: var(--additionalText-color);
     text-align: right;
     font-size: 1.5em;
     margin: 20px 25px;
@@ -144,7 +146,7 @@
 
 h1 {
   margin: 0 0 60px;
-  color: var(--cyan-color);
+  color: var(--additionalText-color);
   font-size: 128px;
   font-weight: inherit;
 

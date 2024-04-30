@@ -23,7 +23,7 @@ function TaskItem({ taskDescription, date, status, id, onUpdateStatus }: TaskIte
     };
 
     const iconSrc = getIcon();
-    const textColor = status === 'Completed' ? 'var(--cyan-color)' : 'var(--yellow-color)';
+    const textColor = status === 'Completed' ? 'var(--additionalText-color)' : 'var(--defaultColor)';
 
     const handleClick = () => {
         onUpdateStatus(id);

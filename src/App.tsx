@@ -6,32 +6,21 @@ import {TaskProps, pendingTasks, STATUS_SUCCESS, STATUS_PENDING, STATUS_ALL} fro
 import InputHolder from "./components/inputHolder";
 import Sidebar from "./components/Sidebar";
 import ClearCompletedButton from "./components/clearBlock";
+import {updateThemeColors} from "./themeUtils";
+
 
 function App() {
 
     const [currentTaskType, setCurrentTaskType] = useState<string>(STATUS_PENDING);
-
     const [tasks, setTasks] = useState<TaskProps[]>(pendingTasks);
-
     const [pendingTasksActive, setPendingTasksActive] = useState<TaskProps[]>(tasks.slice(0, 6));
     const [hasMoreTasks, setHasMoreTasks] = useState<boolean>(true);
 
+    // Логика обсервера
     const lastTaskRef = useRef<HTMLDivElement>(null);
 
-    const observerCallback: IntersectionObserverCallback = (entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && hasMoreTasks) {
-                loadMoreTasks();
-            }
-        });
-    };
-
-    const observerOptions: IntersectionObserverInit = {
-        threshold: 0
-    };
-
     useEffect(() => {
-        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        const observer = new IntersectionObserver(observerCallback, {threshold: 0});
 
         if (lastTaskRef.current && pendingTasksActive.length < tasks.length) {
             observer.observe(lastTaskRef.current);
@@ -44,6 +33,16 @@ function App() {
         };
     }, [pendingTasksActive, tasks]);
 
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && hasMoreTasks) {
+                loadMoreTasks();
+            }
+        });
+    };
+
+
+    // Создание таски
     const handleCreateTask = useCallback((newTask: TaskProps) => {
         setTasks(prevTasks => {
             return [...prevTasks, newTask];
@@ -52,6 +51,7 @@ function App() {
 
     useEffect(() => {
         localStorage.setItem(currentTaskType, JSON.stringify(tasks));
+        updateThemeColors(currentTaskType);
     }, [tasks, currentTaskType]);
 
     useEffect(() => {
@@ -62,6 +62,7 @@ function App() {
 
     }, [tasks]);
 
+    // Пагинация
     const loadMoreTasks = () => {
         const startIndex = pendingTasksActive.length;
         const endIndex = startIndex + 6;
@@ -78,6 +79,7 @@ function App() {
         []
     );
 
+    // Показ на странице массива в зависимости от фильтра
     const handleFilterClick = useCallback((filterStatus: string) => {
         let filteredTasks: TaskProps[];
 
@@ -94,11 +96,13 @@ function App() {
         setHasMoreTasks(true);
     }, [getTasksFromLocalStorage]);
 
+    // Смотритель изменений в типе таски
     useEffect(() => {
         const storedTasks = getTasksFromLocalStorage(currentTaskType);
         updateTasks(storedTasks)
     }, [currentTaskType, getTasksFromLocalStorage]);
 
+    // Смена статусов.
     const handleUpdateStatus = (taskId: string) => {
 
 
@@ -130,6 +134,7 @@ function App() {
         setHasMoreTasks(true)
     };
 
+    // Просто зачистка массива Completed
     const handleClearCompleted = () => {
         localStorage.removeItem(STATUS_SUCCESS);
         if (currentTaskType !== STATUS_PENDING) {
