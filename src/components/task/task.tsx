@@ -6,8 +6,11 @@ import like from '../../assets/like.svg'
 import logo from '../../assets/appIco.svg'
 import {TaskProps} from "../../utils/taskArrays";
 
+interface TaskItemProps extends TaskProps {
+    onUpdateStatus: (taskId: string) => void; // Define onUpdateStatus prop
+}
 
-function TaskItem({ taskDescription, date, status, id }: TaskProps) {
+function TaskItem({ taskDescription, date, status, id, onUpdateStatus }: TaskItemProps) {
     const getIcon = () => {
         switch (status) {
             case 'Pending':
@@ -21,11 +24,13 @@ function TaskItem({ taskDescription, date, status, id }: TaskProps) {
 
     const iconSrc = getIcon();
     const textColor = status === 'Completed' ? 'var(--cyan-color)' : 'var(--yellow-color)';
-    console.log("Task Comp is called")
 
+    const handleClick = () => {
+        onUpdateStatus(id);
+    };
     return (
         <div id={id} className="taskItem" style={{ color: textColor }}>
-            <img className="imgAnim" src={iconSrc} alt={`${status} Icon`}/>
+            <img className="imgAnim" src={iconSrc} alt={`${status} Icon`} onClick={handleClick}/>
             <p className="taskDesc" >  {taskDescription}</p>
             <p className="taskDate">{date}</p>
         </div>
