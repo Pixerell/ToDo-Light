@@ -4,14 +4,10 @@ import '../../App.scss'
 import circle from '../../assets/circle.svg'
 import like from '../../assets/like.svg'
 import logo from '../../assets/appIco.svg'
+import {TaskProps} from "../../utils/taskArrays";
 
-interface TaskItemProps {
-    taskDescription: string;
-    date: string;
-    status: string;
-}
 
-function TaskItem({ taskDescription, date, status }: TaskItemProps) {
+function TaskItem({ taskDescription, date, status, id }: TaskProps) {
     const getIcon = () => {
         switch (status) {
             case 'Pending':
@@ -25,14 +21,15 @@ function TaskItem({ taskDescription, date, status }: TaskItemProps) {
 
     const iconSrc = getIcon();
     const textColor = status === 'Completed' ? 'var(--cyan-color)' : 'var(--yellow-color)';
+    console.log("Task Comp is called")
 
     return (
-        <div className="taskItem" style={{ color: textColor }}>
+        <div id={id} className="taskItem" style={{ color: textColor }}>
             <img className="imgAnim" src={iconSrc} alt={`${status} Icon`}/>
-            <p className="taskDesc" >{taskDescription}</p>
+            <p className="taskDesc" >  {taskDescription}</p>
             <p className="taskDate">{date}</p>
         </div>
     )
 }
 
-export default TaskItem;
+export default React.memo(TaskItem);

@@ -18,6 +18,7 @@
 }
 
 .taskDesc {
+    margin-left: 5px;
     text-align: left;
     width: 90%;
 }

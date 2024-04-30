@@ -1,19 +1,27 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import './App.scss';
 import bgImg from './assets/absLines.png'
 import allIco from './assets/all.svg'
 import pendingIco from './assets/uncomp.svg'
 import completedIco from './assets/like.svg'
-import enterIco from './assets/enterButton.svg'
 import appIco from './assets/appIco.svg'
 import TaskItem from "./components/task/task";
-import {tasks} from "./utils/tasks";
+import {TaskProps, pendingTasks} from "./utils/taskArrays";
+import InputHolder from "./components/inputHolder";
 
 function App() {
+    console.log("App is called")
+
+    const [pendingTasksActive, setPendingTasks] = useState(pendingTasks);
+
+    const handleCreateTask = useCallback((newTask: TaskProps) => {
+        setPendingTasks((prevPendingTasks) => [...prevPendingTasks, newTask]);
+    }, []);
+
   return (
     <div className="App">
             <img alt="abstract lines background" className="bgImg" src={bgImg}/>
-            <h1>todos </h1>
+            <h1>todos</h1>
             <div className="wrapper">
                 <div className="sidebar">
                     <img className="imgAnim" src={completedIco} alt="Completed Icon" />
@@ -21,21 +29,19 @@ function App() {
                     <img className="imgAnim" src={allIco} alt="All Icon"/>
                 </div>
                 <div className="main">
-                    <p className="taskCount">{tasks.length} left</p>
+                    <p className="taskCount">{pendingTasksActive.length} left</p>
                     <div className="taskHolder">
-                        {tasks.map((task) => (
+                        {pendingTasksActive.map((task:TaskProps) => (
                             <TaskItem
                                 key={task.id}
+                                id={task.id}
                                 taskDescription={task.taskDescription}
                                 date={task.date}
                                 status={task.status}
-                            />
+                             />
                         ))}
                     </div>
-                    <div className="inputHolder">
-                        <input  placeholder="write your task here"/>
-                        <img className="imgAnim" src={enterIco} alt="Enter Icon"/>
-                    </div>
+                    <InputHolder onCreateTask={handleCreateTask}/>
                 </div>
             </div>
             <div className="cleanBlock">
