@@ -19,7 +19,6 @@ const InputHolder: React.FC<InputHolderProps> = ({onCreateTask, currentTaskType 
         }
 
         const newTask = createTask(newTaskDescription, currentTaskType);
-        console.log('New Task:', newTask);
         onCreateTask(newTask)
         setNewTaskDescription('');
     }, [newTaskDescription]);
