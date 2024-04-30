@@ -14,4 +14,4 @@ function Sidebar({ handleFilterClick }: { handleFilterClick: (filterStatus: stri
     );
 }
 
-export default Sidebar;
+export default React.memo(Sidebar);
