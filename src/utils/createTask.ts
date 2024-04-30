@@ -5,7 +5,7 @@ export const createTask = (description:string) => {
         id: generateUUID(),
         taskDescription: description,
         status: "Pending",
-        date: new Date().toLocaleString(),
+        date: new Date().toLocaleString('en-US',{hour12: false}).replace(',', ''),
     };
 };
 

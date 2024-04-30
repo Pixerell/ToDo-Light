@@ -11,6 +11,12 @@ const InputHolder: React.FC<InputHolderProps> = ({onCreateTask})  => {
     const [newTaskDescription, setNewTaskDescription] = useState<string>('');
 
     const handleInputField = useCallback(() => {
+
+        if (newTaskDescription.length <= 0) {
+            console.log("Fill out the tasks please")
+            return
+        }
+
         const newTask = createTask(newTaskDescription);
         console.log('New Task:', newTask);
         onCreateTask(newTask)
@@ -25,6 +31,7 @@ const InputHolder: React.FC<InputHolderProps> = ({onCreateTask})  => {
                 value={newTaskDescription}
                 placeholder="write your task here"
                 onChange={(e) => setNewTaskDescription(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleInputField()}
             />
             <img
                 className="imgAnim"
