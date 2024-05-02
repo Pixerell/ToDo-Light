@@ -6,12 +6,6 @@ import {STATUS_PENDING, STATUS_SUCCESS, TaskProps} from "./utils/taskArrays";
 
 class IntersectionObserverMock {
   constructor() {}
-
-  observe() {
-  }
-
-  disconnect() {
-  }
 }
 
 // Ignore для того чтобы Typescript принял Observer и его не пришлось бы полностью мокать
