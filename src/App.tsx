@@ -41,7 +41,7 @@ function App() {
         });
     };
 
-
+    
     // Создание таски
     const handleCreateTask = useCallback((newTask: TaskProps) => {
         setTasks(prevTasks => {
@@ -137,6 +137,7 @@ function App() {
     // Просто зачистка массива Completed
     const handleClearCompleted = () => {
         localStorage.removeItem(STATUS_SUCCESS);
+
         if (currentTaskType !== STATUS_PENDING) {
             const pendingData = getTasksFromLocalStorage(STATUS_PENDING);
             updateTasks([...pendingData])
@@ -175,7 +176,7 @@ function App() {
                     <InputHolder onCreateTask={handleCreateTask} currentTaskType={currentTaskType}/>
                 </div>
             </div>
-            <ClearCompletedButton onClick={handleClearCompleted}/>
+            <ClearCompletedButton  onClick={handleClearCompleted}/>
         </div>
     );
 }
